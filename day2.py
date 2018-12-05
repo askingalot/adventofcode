@@ -1,4 +1,4 @@
-from collections import Counter, defaultdict
+from collections import Counter
 
 def part1(filename):
     with open(filename) as input:
