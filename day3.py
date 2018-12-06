@@ -1,9 +1,13 @@
+# Wow, this code is...less than good.
+#  MUCH less than good...
+
+
 import re
 from collections import namedtuple
 
 Claim = namedtuple('Claim', ['id', 'left', 'top', 'right', 'bottom'])
 
-def part1(filename):
+def part1_and_2(filename):
     with open(filename) as input:
         claim_lines = input.readlines()
 
@@ -15,15 +19,22 @@ def part1(filename):
         claim = Claim(id, left, top, right=left+width, bottom=top+height)
         claims.append(claim)
 
+    overlap_ids = []
     overlap_coords = []
     for i in range(len(claims) - 1):
         claim1 = claims[i]
         for j in range(i+1, len(claims)):
             claim2 = claims[j]
             coords = find_overlap_coords(claim1, claim2)
-            overlap_coords.extend(coords)
 
-    return len(set(overlap_coords))
+            if len(coords):
+                overlap_coords.extend(coords)
+                overlap_ids.append(claim1.id)
+                overlap_ids.append(claim2.id)
+
+
+    all_ids = [ claim.id for claim in claims ]
+    return len(set(overlap_coords)), set(all_ids).difference(overlap_ids)
 
 
 def find_overlap_coords(claim1, claim2):
@@ -51,4 +62,4 @@ def find_overlap_coords(claim1, claim2):
             for y in range(top_y, bottom_y) ]
 
 
-print(part1('day3.txt'))
+print(part1_and_2('day3.txt'))
