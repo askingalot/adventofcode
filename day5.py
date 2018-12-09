@@ -22,21 +22,20 @@ def part2(filename):
 
 def react(strand):
     while True:
-        indexes_to_delete = []
+        did_react = False
         i = 0
         while i < len(strand) - 1:
             if should_react(strand[i], strand[i+1]):
-                indexes_to_delete.append(i)
-                indexes_to_delete.append(i+1)
+                strand[i] = '_'
+                strand[i+1] = '_'
+                did_react = True
                 i += 2
             else:
                 i += 1
 
-
-        for i in reversed(indexes_to_delete):
-            del strand[i]
-
-        if not len(indexes_to_delete):
+        if did_react:
+            strand = [ unit for unit in strand if unit != '_' ]
+        else:
             return strand
 
 
