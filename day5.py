@@ -1,3 +1,5 @@
+import string
+
 def part1(filename):
     with open(filename) as input:
         strand = list(input.readline().strip())
@@ -8,16 +10,10 @@ def part2(filename):
     with open(filename) as input:
         strand_str = input.readline().strip()
     
-    print(len(set(strand_str.upper())))
-
-    candidate_units = (
-        ( chr(unit[0]), chr(unit[1]) )
-        for unit in zip(range(ord('A'), ord('Z')+1), 
-                        range(ord('a'), ord('z')+1)))
-
     min_strand_length = len(strand_str)
-    for upper, lower in candidate_units:
-        strand = list(strand_str.replace(upper, '').replace(lower, ''))
+    for upper_unit in string.ascii_uppercase:
+        strand = list(strand_str.replace(upper_unit, '')
+                                .replace(upper_unit.lower(), ''))
         candidate_length = len(react(strand))
         if candidate_length < min_strand_length:
             min_strand_length = candidate_length
@@ -35,6 +31,7 @@ def react(strand):
                 i += 2
             else:
                 i += 1
+
 
         for i in reversed(indexes_to_delete):
             del strand[i]
